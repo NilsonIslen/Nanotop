@@ -95,7 +95,15 @@ export default async function ManizalesPage() {
       </section>
 
       <section id="ranking" className="mx-auto max-w-3xl px-4 pb-8">
-        
+        <div className="flex items-end justify-between gap-4">
+          <div>
+            <p className="text-sm font-bold uppercase text-[#0b75bb]">Ranking en vivo</p>
+            <h2 className="mt-1 text-2xl font-black">Tabla de Manizales</h2>
+          </div>
+          <p className="rounded-md bg-white px-3 py-2 text-sm font-black text-slate-700 shadow-sm">
+            {ranking.length} perfiles
+          </p>
+        </div>
 
         <div className="mt-4 grid gap-4">
           {ranking.length === 0 && (
@@ -105,8 +113,15 @@ export default async function ManizalesPage() {
           )}
 
           {ranking.map((user, index) => (
-            <article key={user.id} className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-              <div className="h-1 bg-[#209ce9]" />
+            <article
+              key={user.id}
+              className={`overflow-hidden rounded-2xl border bg-white shadow-sm transition ${
+                index === 0
+                  ? "border-amber-300 shadow-amber-100"
+                  : "border-slate-200 hover:border-[#209ce9] hover:shadow-md"
+              }`}
+            >
+              <div className={index === 0 ? "h-1.5 bg-amber-400" : "h-1 bg-[#209ce9]"} />
               <div className="p-4">
                 <div className="flex items-start gap-3">
                   <div className="relative grid size-12 shrink-0 place-items-center">
