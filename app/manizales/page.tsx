@@ -84,7 +84,7 @@ export default async function ManizalesPage() {
           <p className="mt-4 leading-7 text-slate-600">
             Manizales es la primera comunidad NanoTop. Cada participante empieza con 0 puntos
             y asciende usando votos generados por transacciones de 0,1 NANO hacia usuarios que
-            están por encima de su perfil en el ranking local.
+            tienen los mismos puntos o más en el ranking local.
           </p>
           <Link
             href="/manizales/participar"
@@ -171,8 +171,8 @@ export default async function ManizalesPage() {
           <p className="text-sm font-bold uppercase text-[#0b75bb]">Cómo participar</p>
           <h2 className="mt-1 text-2xl font-black">Vota con transacciones reales</h2>
           <p className="mt-2 leading-7 text-slate-600">
-            Para obtener 1 voto debes enviar 0,1 NANO a un usuario que esté por encima de ti
-            en el ranking de Manizales. El receptor recibe el pago completo.
+            Para obtener 1 voto debes enviar 0,1 NANO a un usuario que tenga tus mismos puntos
+            o más en el ranking de Manizales. El receptor recibe el pago completo.
           </p>
           <ul className="mt-4 grid gap-2 text-sm font-semibold text-slate-700">
             <li className="rounded-md bg-slate-50 p-3">Posicionarme: +1 punto para tu perfil.</li>

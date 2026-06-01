@@ -1,7 +1,7 @@
 const steps = [
   {
     title: "Envía 0,1 NANO",
-    text: "El usuario envía 0,1 NANO a otro perfil que esté por encima en el ranking de su ciudad.",
+    text: "El usuario envía 0,1 NANO a otro perfil con los mismos puntos o más en el ranking de su ciudad.",
   },
   {
     title: "Recibe 1 voto",

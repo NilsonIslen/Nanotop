@@ -310,7 +310,7 @@ export default function ParticiparPage() {
             <div className="mt-4 grid gap-3">
               {upperProfiles.length === 0 && (
                 <p className="rounded-xl bg-slate-50 p-4 text-sm font-bold text-slate-600">
-                  No hay perfiles por encima de ti en este momento.
+                  No hay perfiles con tus mismos puntos o más en este momento.
                 </p>
               )}
 

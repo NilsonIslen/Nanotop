@@ -61,16 +61,16 @@ export async function POST(request: Request) {
     }),
   ]);
 
-  if (!sender || !receiver || sender.cityId !== receiver.cityId) {
+  if (!sender || !receiver || sender.cityId !== receiver.cityId || sender.id === receiver.id) {
     return NextResponse.json(
       { error: "Perfiles inválidos para esta votación" },
       { status: 400 },
     );
   }
 
-  if (receiver.points <= sender.points) {
+  if (receiver.points < sender.points) {
     return NextResponse.json(
-      { error: "Solo puedes votar por perfiles que estén por encima del tuyo" },
+      { error: "Solo puedes votar por perfiles con los mismos puntos o más que el tuyo" },
       { status: 400 },
     );
   }
@@ -130,8 +130,12 @@ export async function POST(request: Request) {
         select: { id: true, points: true, cityId: true },
       });
 
-      if (freshSender.cityId !== freshReceiver.cityId || freshReceiver.points <= freshSender.points) {
-        throw new Error("El receptor ya no está por encima de tu perfil");
+      if (
+        freshSender.id === freshReceiver.id ||
+        freshSender.cityId !== freshReceiver.cityId ||
+        freshReceiver.points < freshSender.points
+      ) {
+        throw new Error("El receptor ya no tiene los mismos puntos o más que tu perfil");
       }
 
       const targetProfileId =
@@ -186,8 +190,11 @@ export async function POST(request: Request) {
       const upperProfiles = await tx.profile.findMany({
         where: {
           cityId: profile.cityId,
+          id: {
+            not: profile.id,
+          },
           points: {
-            gt: profile.points,
+            gte: profile.points,
           },
         },
         orderBy: [{ points: "desc" }, { createdAt: "asc" }],

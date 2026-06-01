@@ -46,8 +46,11 @@ export async function GET(request: NextRequest) {
   const upperProfiles = await prisma.profile.findMany({
     where: {
       cityId: profile.cityId,
+      id: {
+        not: profile.id,
+      },
       points: {
-        gt: profile.points,
+        gte: profile.points,
       },
     },
     orderBy: [{ points: "desc" }, { createdAt: "asc" }],
