@@ -1,11 +1,13 @@
 const NANO_RAW_PER_VOTE = "100000000000000000000000000000";
 const RAW_PER_NANO = BigInt(10) ** BigInt(30);
 const RPC_TIMEOUT_MS = 8000;
+const DEFAULT_NANO_RPC_URL = "http://127.0.0.1:7076";
 
 type NanoBlockInfo = {
   block_account?: string;
   amount?: string;
   confirmed?: string;
+  type?: string;
   subtype?: string;
   contents?: string | {
     link_as_account?: string;
@@ -42,12 +44,18 @@ export async function getNanoBlockInfo(hash: string) {
 }
 
 export async function findVotePaymentBlock(senderWallet: string, receiverWallet: string) {
-  const data = await nanoRpc<NanoAccountHistory>({
-    action: "account_history",
-    account: senderWallet,
-    count: "50",
-    raw: "true",
-  });
+  const data = await nanoRpc<NanoAccountHistory>(
+    {
+      action: "account_history",
+      account: senderWallet,
+      count: "50",
+      raw: "true",
+    },
+    {
+      shouldRetryWithFallback: (history) =>
+        !Array.isArray(history.history) || history.history.length === 0,
+    },
+  );
 
   if (!Array.isArray(data.history) || data.history.length === 0) {
     throw new Error(
@@ -57,7 +65,7 @@ export async function findVotePaymentBlock(senderWallet: string, receiverWallet:
 
   const sendsToReceiver = data.history.filter(
     (entry) =>
-      entry.subtype === "send" &&
+      getBlockType(entry) === "send" &&
       entry.confirmed === "true" &&
       entry.account === receiverWallet,
   );
@@ -91,8 +99,39 @@ export async function findVotePaymentBlock(senderWallet: string, receiverWallet:
   return { hash, block };
 }
 
-async function nanoRpc<T>(body: Record<string, string>) {
-  const rpcUrl = process.env.NANO_RPC_URL ?? "http://127.0.0.1:7076";
+async function nanoRpc<T>(
+  body: Record<string, string>,
+  options: {
+    shouldRetryWithFallback?: (data: T) => boolean;
+  } = {},
+) {
+  const rpcUrls = getNanoRpcUrls();
+  let lastError: unknown;
+
+  for (let index = 0; index < rpcUrls.length; index += 1) {
+    const isLastRpc = index === rpcUrls.length - 1;
+
+    try {
+      const data = await requestNanoRpc<T>(rpcUrls[index], body);
+
+      if (!isLastRpc && options.shouldRetryWithFallback?.(data)) {
+        continue;
+      }
+
+      return data;
+    } catch (error) {
+      lastError = error;
+
+      if (isLastRpc) {
+        break;
+      }
+    }
+  }
+
+  throw lastError instanceof Error ? lastError : new Error("No se pudo conectar con el nodo Nano");
+}
+
+async function requestNanoRpc<T>(rpcUrl: string, body: Record<string, string>) {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), RPC_TIMEOUT_MS);
 
@@ -128,6 +167,16 @@ async function nanoRpc<T>(body: Record<string, string>) {
   }
 }
 
+function getNanoRpcUrls() {
+  return [
+    process.env.NANO_RPC_URL ?? DEFAULT_NANO_RPC_URL,
+    ...(process.env.NANO_RPC_FALLBACK_URLS ?? "")
+      .split(",")
+      .map((url) => url.trim())
+      .filter(Boolean),
+  ];
+}
+
 export function normalizeNanoHash(value: string) {
   return value.trim().toUpperCase();
 }
@@ -145,7 +194,7 @@ export function getVotePaymentIssue(
     return "La transacción todavía no está confirmada en la red Nano.";
   }
 
-  if (block.subtype !== "send") {
+  if (getBlockType(block) !== "send") {
     return "El hash debe ser el bloque de envío desde tu wallet. Parece que pegaste un hash de recepción u otro tipo de bloque.";
   }
 
@@ -193,6 +242,10 @@ function getLinkAsAccount(block: NanoBlockInfo) {
   }
 
   return block.contents.link_as_account;
+}
+
+function getBlockType(block: { subtype?: string; type?: string }) {
+  return block.subtype ?? block.type;
 }
 
 function formatRawAsNano(raw?: string) {
