@@ -82,9 +82,8 @@ export default async function ManizalesPage() {
             </span>
           </div>
           <p className="mt-4 leading-7 text-slate-600">
-            Manizales es la primera comunidad NanoTop. Cada participante empieza con 0 puntos
-            y asciende usando votos generados por transacciones de 0,1 NANO hacia usuarios que
-            tienen los mismos puntos o más en el ranking local.
+            Ranking local impulsado por votos con Nano. Empiezas en 0 y subes usando pagos
+            reales de 0,1 NANO.
           </p>
           <Link
             href="/manizales/participar"
@@ -166,28 +165,14 @@ export default async function ManizalesPage() {
         </div>
       </section>
 
-      <section id="crear" className="mx-auto grid max-w-3xl gap-4 px-4 pb-10">
+      <section id="crear" className="mx-auto max-w-3xl px-4 pb-10">
         <div className="rounded-md border border-slate-200 bg-white p-5">
-          <p className="text-sm font-bold uppercase text-[#0b75bb]">Cómo participar</p>
-          <h2 className="mt-1 text-2xl font-black">Vota con transacciones reales</h2>
-          <p className="mt-2 leading-7 text-slate-600">
-            Para obtener 1 voto debes enviar 0,1 NANO a un usuario que tenga tus mismos puntos
-            o más en el ranking de Manizales. El receptor recibe el pago completo.
-          </p>
-          <ul className="mt-4 grid gap-2 text-sm font-semibold text-slate-700">
-            <li className="rounded-md bg-slate-50 p-3">Posicionarme: +1 punto para tu perfil.</li>
-            <li className="rounded-md bg-slate-50 p-3">Quemar: -1 punto al receptor, sin bajar de 0.</li>
-          </ul>
-        </div>
-
-        <div className="rounded-md border border-slate-200 bg-white p-5">
-          <p className="text-sm font-bold uppercase text-[#0b75bb]">Perfil local</p>
-          <h2 className="mt-1 text-2xl font-black">Datos públicos y datos privados</h2>
-          <p className="mt-2 leading-7 text-slate-600">
-            Tu perfil público muestra nombre, ciudad, país, wallet Nano y enlaces opcionales.
-            Barrio y celular se usan solo para verificar que perteneces a Manizales y no
-            serán visibles para otros usuarios. El enlace a redes sociales es opcional.
-          </p>
+          <p className="text-sm font-bold uppercase text-[#0b75bb]">Cómo funciona</p>
+          <div className="mt-3 grid gap-2 text-sm font-semibold text-slate-700 sm:grid-cols-3">
+            <p className="rounded-md bg-slate-50 p-3">Envía 0,1 NANO a un perfil con tus puntos o más.</p>
+            <p className="rounded-md bg-slate-50 p-3">Usa el voto para subir +1 o quemar -1.</p>
+            <p className="rounded-md bg-slate-50 p-3">Barrio y celular quedan privados.</p>
+          </div>
           <Link
             href="/manizales/participar"
             className="mt-5 block rounded-md bg-slate-950 px-4 py-3 text-center text-sm font-bold text-white"
