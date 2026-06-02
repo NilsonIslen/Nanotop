@@ -73,18 +73,14 @@ export default async function ManizalesPage() {
       <section className="mx-auto max-w-3xl px-4 py-6">
         <div className="rounded-md border border-slate-200 bg-white p-5 shadow-sm">
           <div className="flex items-start justify-between gap-4">
-            <div>
-              <p className="text-sm font-bold uppercase text-[#0b75bb]">Primer lanzamiento</p>
-              <h1 className="mt-2 text-3xl font-black">Ranking NanoTop Manizales</h1>
-            </div>
+            <p className="leading-7 text-slate-600">
+              Ranking local impulsado por votos con Nano. Empiezas en 0 y subes usando pagos
+              reales de 0,1 NANO.
+            </p>
             <span className="rounded-full bg-sky-100 px-3 py-1 text-xs font-bold text-[#0b75bb]">
               Beta
             </span>
           </div>
-          <p className="mt-4 leading-7 text-slate-600">
-            Ranking local impulsado por votos con Nano. Empiezas en 0 y subes usando pagos
-            reales de 0,1 NANO.
-          </p>
           <Link
             href="/manizales/participar"
             className="mt-5 block rounded-md bg-[#209ce9] px-4 py-3 text-center text-sm font-bold text-white"
