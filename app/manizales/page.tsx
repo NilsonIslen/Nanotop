@@ -185,7 +185,7 @@ export default async function ManizalesPage() {
           <p className="text-sm font-bold uppercase text-[#0b75bb]">Cómo funciona</p>
           <div className="mt-3 grid gap-2 text-sm font-semibold text-slate-700 sm:grid-cols-3">
             <p className="rounded-md bg-slate-50 p-3">Envía 0,1 NANO a un perfil con tus puntos o más.</p>
-            <p className="rounded-md bg-slate-50 p-3">Usa el voto para subir +1 o quemar -1.</p>
+            <p className="rounded-md bg-slate-50 p-3">Usa el voto: +1 para ti o -1 al receptor.</p>
             <p className="rounded-md bg-slate-50 p-3">Barrio y celular quedan privados.</p>
           </div>
           <Link
